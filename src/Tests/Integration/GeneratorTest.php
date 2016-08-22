@@ -12,6 +12,7 @@ namespace Formable\Tests\Integration;
 use Formable\Generator\Generator;
 use Formable\Tests\Integration\DTOs\Collection\TestCollectionDTO;
 use Formable\Tests\Integration\DTOs\TestDoubleNestedDTO;
+use Formable\Tests\Integration\DTOs\TestExtraFieldDTO;
 use Formable\Tests\Integration\DTOs\TestMoneyDTO;
 use Formable\Tests\Integration\DTOs\TestNestedDTO;
 use Formable\Tests\Integration\DTOs\TestNoPropertyNameDTO;
@@ -53,6 +54,15 @@ class GeneratorTest extends WebTestCase
     public function it_should_generate_a_form()
     {
         $form = $this->generator->generate(new TestDTO());
+        $this->assertInstanceOf('\Symfony\Component\Form\Form', $form);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_generate_a_form_even_whith_extra_fields()
+    {
+        $form = $this->generator->generate(new TestExtraFieldDTO());
         $this->assertInstanceOf('\Symfony\Component\Form\Form', $form);
     }
 

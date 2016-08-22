@@ -62,28 +62,26 @@ class Generator
         foreach ($reflectionObject->getProperties() as $reflectionProperty) {
             /** @var Formable $annotation */
             $annotation = $this->reader->getPropertyAnnotation($reflectionProperty, $this->annotationClass);
+            if (null === $annotation) {
+                continue;
+            }
 
             $name = $annotation->getName() ?: $reflectionProperty->getName();
+            ++$recognizedFields;
 
-            if (null !== $annotation) {
-                ++$recognizedFields;
-
-                if ($class = $annotation->getClass()) {
-
-                    $formBuilder->add(
-                        $this->createFormBuilderForObject(
-                            new \ReflectionClass($class),
-                            $formBuilder->create($name, null, ['compound' => true, 'data_class' => $class])
-                        )
-                    );
-
-                } else {
-                    $formBuilder->add(
-                        $name,
-                        $annotation->getDataType(),
-                        array_merge($annotation->getOptions(), ['property_path' => $annotation->getName()])
-                    );
-                }
+            if ($class = $annotation->getClass()) {
+                $formBuilder->add(
+                    $this->createFormBuilderForObject(
+                        new \ReflectionClass($class),
+                        $formBuilder->create($name, null, ['compound' => true, 'data_class' => $class])
+                    )
+                );
+            } else {
+                $formBuilder->add(
+                    $name,
+                    $annotation->getDataType(),
+                    array_merge($annotation->getOptions(), ['property_path' => $annotation->getName()])
+                );
             }
         }
 
