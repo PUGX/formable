@@ -9,7 +9,7 @@ class TestDoubleNestedDTO
     /**
      * @var
      *
-     * @Formable(name="nestedDTO", class="Formable\Tests\Integration\DTOs\TestNestedDTO")
+     * @Formable(name="nestedDTO", class=TestNestedDTO::class)
      */
     public $nestedDTO;
 }
