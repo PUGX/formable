@@ -9,13 +9,14 @@
 namespace spec\Formable\Generator;
 
 use Formable\Definition\Formable;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TestDTO
 {
     /**
      * @var
      *
-     * @Formable(name="name", dataType="text", options={})
+     * @Formable(name="name", dataType=TextType::class, options={})
      */
     public $name;
 }

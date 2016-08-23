@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\Reader;
 use Formable\Definition\Formable;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
@@ -32,7 +33,7 @@ class GeneratorSpec extends ObjectBehavior
         $testDTO->age  = 18;
 
         $factory->createBuilder(
-            'form',
+            FormType::class,
             $testDTO,
             [
                 'data_class'      => 'stdClass'
@@ -54,11 +55,11 @@ class GeneratorSpec extends ObjectBehavior
     {
         $this->beConstructedWith($reader, $factory);
         $factory->createBuilder(
-            'form',
-            (new \ReflectionClass('spec\Formable\Generator\TestDTO'))->newInstanceWithoutConstructor(),
+            FormType::class,
+            (new \ReflectionClass(TestDTO::class))->newInstanceWithoutConstructor(),
             [
                 'csrf_protection' => false,
-                'data_class'      => 'spec\Formable\Generator\TestDTO'
+                'data_class'      => TestDTO::class
             ]
         )->willReturn($formBuilder);
 
@@ -70,13 +71,13 @@ class GeneratorSpec extends ObjectBehavior
         $formable->getOptions()->willReturn([]);
         $formable->getClass()->willReturn(null);
 
-        $property = new \ReflectionProperty('spec\Formable\Generator\TestDTO', 'name');
+        $property = new \ReflectionProperty(TestDTO::class, 'name');
         $reader->getPropertyAnnotation($property, 'Formable\\Definition\\Formable')->willReturn(
             $formable
         );
 
         $this->generate(new TestDTO(), ['csrf_protection' => false])
-            ->shouldReturnAnInstanceOf('\Symfony\Component\Form\Form')
+            ->shouldReturnAnInstanceOf(Form::class)
         ;
     }
 }

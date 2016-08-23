@@ -5,6 +5,7 @@ namespace Formable\Generator;
 use Doctrine\Common\Annotations\Reader;
 use Formable\Definition\Formable;
 use Formable\Exception\FormGeneratorException;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
@@ -37,7 +38,7 @@ class Generator
     {
         $reflectionObject = new \ReflectionClass($originalObject);
         $baseBuilder = $this->factory->createBuilder(
-            'form',
+            FormType::class,
             $originalObject,
             array_merge(['data_class' => $reflectionObject->name], $options)
         );
